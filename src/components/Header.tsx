@@ -95,9 +95,10 @@ const Header: React.FC = () => {
             aria-label="Toggle language"
           >
             {language === 'pt' ? (
-              <img src={USA} alt="" />
+              <img src={BR} alt="" />
             ) : (
-             <img src={BR} alt="" />
+             <img src={USA} alt="" />
+             
             )}
           </Toggle>
 
@@ -129,9 +130,9 @@ const Header: React.FC = () => {
             aria-label="Toggle language"
           >
             {language === 'pt' ? (
-              <img src={USA} alt="" />
-            ) : (
               <img src={BR} alt="" />
+            ) : (
+              <img src={USA} alt="" />
             )}
           </Toggle>
           
