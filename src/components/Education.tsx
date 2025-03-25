@@ -190,7 +190,7 @@ const Education: React.FC = () => {
               }}
             >
               <div className="h-full flex flex-col">
-                <h3 className="text-lg font-bold text-black mb-1 text-primary">{item.course}</h3>
+                <h3 className="text-lg font-bold text-black mb-1">{item.course}</h3>
                 <p className="text-accent font-medium">{item.institution}</p>
                 <p className="text-sm text-muted-foreground">{item.location}</p>
                 <div className="mt-auto pt-4">
