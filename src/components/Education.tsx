@@ -1,6 +1,6 @@
-
 import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/providers/LanguageProvider';
 
 interface EducationItem {
   course: string;
@@ -66,9 +66,68 @@ const educationData: EducationItem[] = [
   }
 ];
 
+//English translation for education data
+const educationDataEn: EducationItem[] = [
+  {
+    course: "C#",
+    institution: "Microsoft",
+    location: "São Paulo",
+    period: "02/2025 - In progress"
+    },
+    {
+    course: "Java",
+    institution: "Udemy",
+    location: "São Paulo",
+    period: "01/2024 - 03/2024"
+    },
+    {
+    course: "Computer Science",
+    institution: "Estácio de Sá University",
+    location: "São Paulo",
+    period: "02/2023 - In progress"
+    },
+    {
+    course: "Python",
+    institution: "XP Educação",
+    location: "São Paulo",
+    period: "11/2022 - 01/2023"
+    },
+    {
+    course: "React.js Next.js Node.js",
+    institution: "Udemy",
+    location: "São Paulo",
+    period: "06/2022 - 08/2022"
+    },
+    {
+    course: "Full Stack Developer",
+    institution: "Udemy",
+    location: "São Paulo",
+    period: "04/2022 - 06/2022"
+    },
+    {
+    course: "JavaScript",
+    institution: "Udemy",
+    location: "São Paulo",
+    period: "01/2022 - 03/2022"
+    },
+    {
+    course: "Web Developer",
+    institution: "Udemy",
+    location: "São Paulo",
+    period: "10/2020 - 12/2020"
+    },
+    {
+    course: "SEO for Developers",
+    institution: "Udemy",
+    location: "São Paulo",
+    period: "09/2020 - 09/2020"
+    }
+];
+
 const Education: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -108,6 +167,9 @@ const Education: React.FC = () => {
     };
   }, []);
 
+  // Get education data based on current language
+  const eduData = language === 'en' ? educationDataEn : educationData;
+
   return (
     <section 
       id="formação" 
@@ -115,10 +177,10 @@ const Education: React.FC = () => {
       className="py-20 px-6 bg-secondary/30 section"
     >
       <div className="container max-w-5xl mx-auto">
-        <h2 className="section-heading">Formação Acadêmica</h2>
+        <h2 className="section-heading">{t('academic.education')}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">
-          {educationData.map((item, index) => (
+          {eduData.map((item, index) => (
             <div 
               key={index}
               ref={el => itemRefs.current[index] = el}
@@ -128,7 +190,7 @@ const Education: React.FC = () => {
               }}
             >
               <div className="h-full flex flex-col">
-                <h3 className="text-lg font-bold mb-1 text-[black]">{item.course}</h3>
+                <h3 className="text-lg font-bold text-black mb-1 text-primary">{item.course}</h3>
                 <p className="text-accent font-medium">{item.institution}</p>
                 <p className="text-sm text-muted-foreground">{item.location}</p>
                 <div className="mt-auto pt-4">

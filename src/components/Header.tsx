@@ -1,14 +1,19 @@
-
 import React, { useEffect, useState } from 'react';
 import { cn } from "@/lib/utils";
 import { useTheme } from '@/providers/ThemeProvider';
+import { useLanguage } from '@/providers/LanguageProvider';
 import { Sun, Moon } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
+
+
+import USA from "../../public/assets/icons8-usa-48.png"
+import BR from "../../public/assets/icons8-brasil-48.png"
 
 const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +38,15 @@ const Header: React.FC = () => {
       });
     }
   };
+
+  // Navigation items with translations
+  const navItems = [
+    { id: 'sobre', label: t('about') },
+    { id: 'experiência', label: t('experience') },
+    { id: 'habilidades', label: t('skills') },
+    { id: 'formação', label: t('education') },
+    { id: 'contato', label: t('contact') }
+  ];
 
   return (
     <header 
@@ -60,17 +74,33 @@ const Header: React.FC = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <nav className="flex items-center space-x-6">
-            {['sobre', 'experiência', 'habilidades', 'formação', 'contato'].map(item => (
+            {navItems.map(item => (
               <button 
-                key={item}
-                onClick={() => scrollToSection(item)}
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
                 className="text-sm text-muted-foreground/90 hover:text-foreground transition-colors capitalize"
               >
-                {item}
+                {item.label}
               </button>
             ))}
           </nav>
           
+          {/* Language Toggle */}
+          <Toggle 
+            variant="outline" 
+            size="sm" 
+            pressed={language === 'en'}
+            onPressedChange={toggleLanguage}
+            className="rounded-full w-8 h-8 p-0 border-border/40 hover:bg-secondary hover:text-foreground"
+            aria-label="Toggle language"
+          >
+            {language === 'pt' ? (
+              <img src={USA} alt="" />
+            ) : (
+             <img src={BR} alt="" />
+            )}
+          </Toggle>
+
           {/* Theme Toggle */}
           <Toggle 
             variant="outline" 
@@ -89,6 +119,22 @@ const Header: React.FC = () => {
         </div>
 
         <div className="flex md:hidden items-center gap-4">
+          {/* Language Toggle (Mobile) */}
+          <Toggle 
+            variant="outline" 
+            size="sm" 
+            pressed={language === 'en'}
+            onPressedChange={toggleLanguage}
+            className="rounded-full w-8 h-8 p-0 border-border/40 hover:bg-secondary hover:text-foreground"
+            aria-label="Toggle language"
+          >
+            {language === 'pt' ? (
+              <img src={USA} alt="" />
+            ) : (
+              <img src={BR} alt="" />
+            )}
+          </Toggle>
+          
           {/* Theme Toggle (Mobile) */}
           <Toggle 
             variant="outline" 
@@ -142,13 +188,13 @@ const Header: React.FC = () => {
           )}
         >
           <nav className="flex flex-col items-center space-y-6">
-            {['sobre', 'experiência', 'habilidades', 'formação', 'contato'].map(item => (
+            {navItems.map(item => (
               <button 
-                key={item}
-                onClick={() => scrollToSection(item)}
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
                 className="text-xl font-medium hover:text-accent transition-colors capitalize py-2"
               >
-                {item}
+                {item.label}
               </button>
             ))}
           </nav>

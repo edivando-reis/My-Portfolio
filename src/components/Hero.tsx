@@ -1,10 +1,11 @@
-
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
+import { useLanguage } from '@/providers/LanguageProvider';
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -59,14 +60,14 @@ const Hero: React.FC = () => {
 
       <div 
         ref={textContainerRef}
-        className="container px-6 max-w-4xl mx-auto text-center relative z-10 appear-animation transition-all duration-100 ease-out"
+        className="container px-6 max-w-4xl mx-auto text-center relative z-10 appear-animation transition-all duration-700 ease-out"
       >
-        <p className="text-accent font-medium mb-4 animate-fade-in">Desenvolvedor Front-End</p>
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight mb-6 stagger-delay-1 ">
+        <p className="text-accent font-medium mb-4 animate-fade-in">{t('frontend.developer')}</p>
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight mb-6 stagger-delay-1">
           Edivando Reis
         </h1>
         <p className="text-[15px] md:text-[18px] text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed stagger-delay-2">
-          Especialista em Front-End com 2 anos de experiência. Trabalho com tecnologias modernas para criar interfaces web responsivas e acessíveis.
+          {t('hero.description')}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center stagger-delay-3">
           <button 
@@ -80,7 +81,7 @@ const Hero: React.FC = () => {
             }}
             className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium transition-all hover:scale-[1.02] active:scale-[0.98] hover:shadow-md"
           >
-            Ver Experiência
+            {t('view.experience')}
           </button>
           <button 
             onClick={() => {
@@ -93,7 +94,7 @@ const Hero: React.FC = () => {
             }}
             className="px-8 py-3 rounded-full bg-secondary text-primary hover:bg-secondary/80 transition-all font-medium hover:scale-[1.02] active:scale-[0.98]"
           >
-            Contato
+            {t('contact')}
           </button>
         </div>
       </div>
