@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
@@ -8,6 +7,7 @@ import Education from '@/components/Education';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { useTheme } from '@/providers/ThemeProvider';
+import { LanguageProvider } from '@/providers/LanguageProvider';
 
 const Index: React.FC = () => {
   const { theme } = useTheme();

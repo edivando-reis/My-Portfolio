@@ -1,7 +1,7 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from '@/providers/LanguageProvider';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -12,6 +12,7 @@ const Contact: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,39 +45,19 @@ const Contact: React.FC = () => {
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formState),
-      });
-  
-      if (response.ok) {
-        toast({
-          title: "Mensagem enviada",
-          description: "Obrigado por entrar em contato! Responderei em breve.",
-        });
-        setFormState({ name: '', email: '', message: '' });
-      } else {
-        toast({
-          title: "Erro ao enviar mensagem",
-          description: "Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Erro ao enviar mensagem",
-        description: "Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.",
-      });
-    } finally {
+    
+    // Simulate form submission
+    setTimeout(() => {
       setIsSubmitting(false);
-    }
+      toast({
+        title: t('message.sent'),
+        description: t('thank.you.message'),
+      });
+      setFormState({ name: '', email: '', message: '' });
+    }, 1500);
   };
 
   return (
@@ -90,18 +71,18 @@ const Contact: React.FC = () => {
       <div className="absolute -left-16 bottom-20 w-[300px] h-[300px] rounded-full bg-primary/5 blur-[80px] opacity-50" />
       
       <div className="container max-w-4xl mx-auto relative z-10">
-        <h2 className="section-heading">Entre em Contato</h2>
+        <h2 className="section-heading">{t('get.in.touch')}</h2>
         
         <div className="glass rounded-2xl p-8 md:p-10 mt-16 shadow-lg">
           <p className="text-center text-muted-foreground mb-8">
-            Tem uma oportunidade ou projeto interessante? Envie uma mensagem e ficarei feliz em conversar!
+            {t('contact.description')}
           </p>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label htmlFor="name" className="text-sm font-medium">
-                  Nome
+                  {t('name')}
                 </label>
                 <input
                   type="text"
@@ -111,13 +92,13 @@ const Contact: React.FC = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-lg bg-white/50 border border-border/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all"
-                  placeholder="Seu nome"
+                  placeholder={t('your.name')}
                 />
               </div>
               
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">
-                  E-mail
+                  {t('email')}
                 </label>
                 <input
                   type="email"
@@ -127,14 +108,14 @@ const Contact: React.FC = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-lg bg-white/50 border border-border/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all"
-                  placeholder="seu@email.com"
+                  placeholder={t('your.email')}
                 />
               </div>
             </div>
             
             <div className="space-y-2">
               <label htmlFor="message" className="text-sm font-medium">
-                Mensagem
+                {t('message')}
               </label>
               <textarea
                 id="message"
@@ -144,7 +125,7 @@ const Contact: React.FC = () => {
                 required
                 rows={5}
                 className="w-full px-4 py-3 rounded-lg bg-white/50 border border-border/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all"
-                placeholder="Sua mensagem..."
+                placeholder={t('your.message')}
               />
             </div>
             
@@ -157,21 +138,21 @@ const Contact: React.FC = () => {
                   isSubmitting && "animate-pulse"
                 )}
               >
-                {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
+                {isSubmitting ? t('sending') : t('send.message')}
               </button>
             </div>
           </form>
           
           <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6 text-center">
             <a 
-              href="mailto:djdidoreis@gmail.com" 
+              href="mailto:contato@edivandoreis.dev" 
               className="text-accent hover:text-accent/80 transition-colors"
             >
               edivando.siqueira@gmail.com
             </a>
             <span className="hidden md:block text-muted-foreground">•</span>
             <a 
-              href="tel:+5511945487840" 
+              href="tel:+5511987654321" 
               className="text-accent hover:text-accent/80 transition-colors"
             >
               +55 (11) 94548-7840

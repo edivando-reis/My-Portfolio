@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/providers/LanguageProvider';
 
 interface Job {
   title: string;
@@ -12,7 +13,7 @@ interface Job {
 
 // Chronological job data (newest to oldest)
 const jobsData: Job[] = [
-  {
+ /*  {
     title: "Desenvolvedor Front End",
     company: "ONG-Insep",
     location: "São Paulo",
@@ -23,7 +24,7 @@ const jobsData: Job[] = [
       "Desenvolvimento seguindo as diretrizes da equipe de UI/UX no Figma.",
       "Otimizei o desempenho das páginas web, melhorando tempos de carregamento e SEO."
     ]
-  },
+  }, */
   {
     title: "Desenvolvedor Front End",
     company: "Muni Startup",
@@ -63,9 +64,9 @@ const jobsData: Job[] = [
     ]
   },
   {
-    title: "Design gráfico/programador/TI",
-    company: "Target Publicidade e Propaganda",
-    location: "Sorriso",
+    title: "Design gráfico",
+    company: "Target",
+    location: "Sorriso-MT",
     period: "03/2016 - 05/2017",
     description: [
       "Manutenção em computadores e softwares, cabeamento, configurações de rede.",
@@ -86,10 +87,11 @@ const jobsData: Job[] = [
       "Condução ou gestão ou execução de operações diárias de backup."
     ]
   },
-  /* {
+  
+  {
     title: "assistente de service desk",
     company: "cpm braxis",
-    location: "são paulo",
+    location: "São paulo",
     period: "05/2007 - 01/2009",
     description: [
       "instalação e configuração de componentes de hardware e software para garantir a usabilidade.",
@@ -97,12 +99,92 @@ const jobsData: Job[] = [
       "atualizar todo o sistema de todos os computadores da rede.",
       "fornecer suporte aos usuários e ser o primeiro ponto de contato."
     ]
-  } */
+  }
 ];
+
+// English translations for job data
+const jobsDataEn: Job[] = [
+  {
+    title: "Front End Developer",
+    company: "Muni Startup",
+    location: "São Paulo",
+    period: "06/2022 – Present",
+    description: [
+      "Developed and maintained responsive user interfaces using HTML, CSS, and JavaScript.",
+      "Collaborated with designers and back-end developers to create dynamic web applications.",
+      "Implemented reusable React components to optimize development.",
+      "Conducted unit and integration tests to ensure code quality.",
+      "Optimized web page performance, improving loading times and SEO."
+    ]
+  },
+  {
+    title: "E-commerce Supervisor",
+    company: "Casa Dos Bateristas",
+    location: "São Paulo",
+    period: "05/2021 - 04/2022",
+    description: [
+      "Managed e-commerce platforms including Tray, Loja Integrada, and Mercado Livre.",
+      "Developed using HTML, CSS, and Javascript",
+      "Marketing actions, maintenance and creation of stores on social networks, Facebook, Instagram.",
+      "Creation, updating of product lists, image database, and customer service."
+    ]
+  },
+  {
+    title: "Chef, Owner",
+    company: "Pocoloco",
+    location: "Sorriso-MT",
+    period: "06/2017 - 02/2020",
+    description: [
+      "Business plan, market research, marketing, and business development.",
+      "Monitoring and planning Google ADWORDS, Facebook ADS advertisements.",
+      "Creation of digital and printed materials for promotion.",
+      "Product quotation, recipe creation, chef.",
+      "Creation of web page using HTML, CSS, and Javascript."
+    ]
+  },
+  {
+    title: "Graphic Designer",
+    company: "Target",
+    location: "Sorriso-MT",
+    period: "03/2016 - 05/2017",
+    description: [
+      "Maintenance of computers and software, cabling, network configurations.",
+      "Planning of marketing campaigns, social media management.",
+      "Creation of websites for clients, communication planning.",
+      "Graphic materials, video creation and editing, visual identity creation."
+    ]
+  },
+  {
+    title: "Support Analyst",
+    company: "Ofcdesk Llc",
+    location: "São Paulo",
+    period: "11/2009 - 04/2015",
+    description: [
+      "Customer service, software support for AutoCAD, Revit, ofcdeskcad.",
+      "Configuration of VPN, SIP, Firewall, SQL, Google ADWORDS analysis.",
+      "Keyword research, ad creation, results monitoring.",
+      "Conducting or managing daily backup operations."
+    ]
+  },
+  {
+    title: "Service Desk Assistant",
+    company: "CPM Braxis S/A",
+    location: "São Paulo",
+    period: "05/2007 - 01/2009",
+    description: [
+      "Installation and configuration of hardware and software components to ensure usability.",
+      "Troubleshooting hardware and software issues, repairing or replacing damaged hardware.",
+      "Updating the entire system of all computers on the network.",
+      "Providing support to users and being the first point of contact."
+    ]
+  }
+];
+
 
 const Experience: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const jobCardRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -142,9 +224,12 @@ const Experience: React.FC = () => {
     };
   }, []);
 
+  // Get jobs data based on current language
+  const jobs = language === 'en' ? jobsDataEn : jobsData;
+  
   // Split jobs into two rows
-  const firstRowJobs = jobsData.slice(0, 3);
-  const secondRowJobs = jobsData.slice(3);
+  const firstRowJobs = jobs.slice(0, 3);
+  const secondRowJobs = jobs.slice(3);
 
   return (
     <section 
@@ -153,7 +238,7 @@ const Experience: React.FC = () => {
       className="py-20 px-6 bg-secondary/30 section"
     >
       <div className="container max-w-5xl mx-auto">
-        <h2 className="section-heading">Experiência Profissional</h2>
+        <h2 className="section-heading">{t('professional.experience')}</h2>
         
         {/* First row of jobs (newest) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">

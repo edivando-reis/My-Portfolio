@@ -2,35 +2,49 @@
 import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/ThemeProvider';
+import { useLanguage } from '@/providers/LanguageProvider';
 
 interface SkillCategory {
   name: string;
+  nameKey: string;
   skills: string[];
 }
 
 const skillsData: SkillCategory[] = [
   {
     name: "Linguagens",
+    nameKey: "languages",
     skills: ["HTML5", "CSS3/SASS", "JavaScript (ES6+)", "TypeScript", "Python", "Java"]
   },
   {
     name: "Frameworks/Bibliotecas",
+    nameKey: "frameworks.libraries",
     skills: ["React", "Next.js", "Angular", "Vite", "TailwindCSS", "Bootstrap"]
   },
   {
     name: "Ferramentas",
+    nameKey: "tools",
     skills: ["Git", "Webpack", "npm/yarn", "Jest", "ESLint", "VS Code"]
   },
   {
     name: "Outros",
+    nameKey: "others",
     skills: ["Responsive Design", "SEO", "Google Analytics", "UX/UI Design", "Performance Optimization", "Acessibilidade Web"]
   }
 ];
+
+// English translations for some specific skills
+const skillsEnTranslations: Record<string, string> = {
+  "Acessibilidade Web": "Web Accessibility",
+  "Responsive Design": "Responsive Design",
+  "Performance Optimization": "Performance Optimization"
+};
 
 const Skills: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const categoryRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { theme } = useTheme();
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -70,6 +84,14 @@ const Skills: React.FC = () => {
     };
   }, []);
 
+  // Translate skill if needed
+  const translateSkill = (skill: string): string => {
+    if (language === 'en' && skillsEnTranslations[skill]) {
+      return skillsEnTranslations[skill];
+    }
+    return skill;
+  };
+
   return (
     <section 
       id="habilidades" 
@@ -77,7 +99,7 @@ const Skills: React.FC = () => {
       className="py-20 px-6 section"
     >
       <div className="container max-w-5xl mx-auto">
-        <h2 className="section-heading">Habilidades Técnicas</h2>
+        <h2 className="section-heading">{t('technical.skills')}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
           {skillsData.map((category, index) => (
@@ -91,7 +113,7 @@ const Skills: React.FC = () => {
                   : 'bg-white'
               )}
             >
-              <h3 className="text-xl font-bold mb-6 text-center pb-3 border-b border-border/30">{category.name}</h3>
+              <h3 className="text-xl font-bold mb-6 text-center pb-3 border-b border-border/30">{t(category.nameKey)}</h3>
               <div className="flex flex-wrap gap-3 justify-center">
                 {category.skills.map((skill, skillIndex) => (
                   <span 
@@ -104,7 +126,7 @@ const Skills: React.FC = () => {
                       animation: `fade-in 0.5s ease-out forwards ${index * 100 + skillIndex * 50}ms`
                     }}
                   >
-                    {skill}
+                    {translateSkill(skill)}
                   </span>
                 ))}
               </div>
