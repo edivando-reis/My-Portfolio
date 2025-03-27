@@ -172,7 +172,7 @@ const Education: React.FC = () => {
 
   return (
     <section 
-      id="formação" 
+      id="education" 
       ref={sectionRef}
       className="py-20 px-6 bg-secondary/30 section"
     >

@@ -1,5 +1,4 @@
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/ThemeProvider';
 import { useLanguage } from '@/providers/LanguageProvider';
@@ -14,12 +13,12 @@ const skillsData: SkillCategory[] = [
   {
     name: "Linguagens",
     nameKey: "languages",
-    skills: ["HTML5", "CSS3/SASS", "JavaScript (ES6+)", "TypeScript", "Python", "Java"]
+    skills: ["HTML5", "CSS3/SASS", "JavaScript (ES6+)", "PHP", "TypeScript", "Python", "Java", "C#"]
   },
   {
     name: "Frameworks/Bibliotecas",
     nameKey: "frameworks.libraries",
-    skills: ["React", "Next.js", "Angular", "Vite", "TailwindCSS", "Bootstrap"]
+    skills: ["React", "Next.js", "Angular", "Vite", "TailwindCSS", "Bootstrap", "jQuery", "Express", "Laravel", "Django", "Flask", "Spring Boot"]
   },
   {
     name: "Ferramentas",
@@ -42,47 +41,36 @@ const skillsEnTranslations: Record<string, string> = {
 
 const Skills: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const categoryRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { theme } = useTheme();
   const { t, language } = useLanguage();
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -10% 0px'
-      }
-    );
+    const currentSection = sectionRef.current;
+    if (!currentSection) return;
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    categoryRefs.current.forEach((item) => {
-      if (item) {
-        observer.observe(item);
-      }
-    });
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-      
-      categoryRefs.current.forEach((item) => {
-        if (item) {
-          observer.unobserve(item);
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          entry.target.classList.add('active');
         }
       });
     };
-  }, []);
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -10% 0px'
+    });
+
+    observer.observe(currentSection);
+
+    return () => {
+      if (currentSection) {
+        observer.unobserve(currentSection);
+      }
+    };
+  }, []); // No dependencies to prevent re-running on theme change
 
   // Translate skill if needed
   const translateSkill = (skill: string): string => {
@@ -94,7 +82,7 @@ const Skills: React.FC = () => {
 
   return (
     <section 
-      id="habilidades" 
+      id="skills" 
       ref={sectionRef}
       className="py-20 px-6 section"
     >
@@ -105,9 +93,9 @@ const Skills: React.FC = () => {
           {skillsData.map((category, index) => (
             <div 
               key={index}
-              ref={el => categoryRefs.current[index] = el}
               className={cn(
-                "section rounded-2xl p-8 shadow-sm border border-border/50 hover:shadow-md transition-all duration-300",
+                "skill-category rounded-2xl p-8 shadow-sm border border-border/50 hover:shadow-md transition-all duration-300",
+                isVisible ? "active" : "",
                 theme === 'dark' 
                   ? 'bg-secondary/50 backdrop-blur-sm' 
                   : 'bg-white'
@@ -118,12 +106,12 @@ const Skills: React.FC = () => {
                 {category.skills.map((skill, skillIndex) => (
                   <span 
                     key={skillIndex} 
-                    className="skill-badge"
+                    className="skill-badge text-center"
                     style={{
                       transitionDelay: `${skillIndex * 50}ms`,
-                      transform: 'translateY(10px)',
-                      opacity: 0,
-                      animation: `fade-in 0.5s ease-out forwards ${index * 100 + skillIndex * 50}ms`
+                      opacity: isVisible ? 1 : 0,
+                      transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
+                      transition: 'opacity 0.5s ease-out, transform 0.5s ease-out'
                     }}
                   >
                     {translateSkill(skill)}

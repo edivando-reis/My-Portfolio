@@ -233,7 +233,7 @@ const Experience: React.FC = () => {
 
   return (
     <section 
-      id="experiência" 
+      id="experience" 
       ref={sectionRef}
       className="py-20 px-6 bg-secondary/30 section"
     >
