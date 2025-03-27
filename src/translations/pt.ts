@@ -23,6 +23,11 @@ export const ptTranslations: Record<string, string> = {
     
     // Education Section
     'academic.education': 'Formação Acadêmica',
+
+      // Projects Section
+    'my.projects': 'Projetos',
+    'view.project': 'Ver Projeto',
+    'project.details': 'Detalhes do Projeto',
     
     // Contact Section
     'get.in.touch': 'Entre em Contato',

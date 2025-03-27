@@ -51,7 +51,7 @@ const Hero: React.FC = () => {
     <div 
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden"
-      id="sobre"
+      id="about"
     >
       {/* Subtle background glow effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-accent/10 blur-[100px] opacity-60" />

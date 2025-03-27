@@ -62,7 +62,7 @@ const Contact: React.FC = () => {
 
   return (
     <section 
-      id="contato" 
+      id="contact" 
       ref={sectionRef}
       className="py-20 px-6 section relative overflow-hidden"
     >

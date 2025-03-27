@@ -1,203 +1,185 @@
-import React, { useEffect, useState } from 'react';
-import { cn } from "@/lib/utils";
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/providers/ThemeProvider';
-import { useLanguage } from '@/providers/LanguageProvider';
-import { Sun, Moon } from 'lucide-react';
-import { Toggle } from '@/components/ui/toggle';
-
-
-import USA from "../../public/assets/icons8-usa-48.png"
-import BR from "../../public/assets/icons8-brasil-48.png"
+import { useLanguage, Language } from '@/providers/LanguageProvider';
 
 const Header: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
 
+  // Handle scroll event to change header appearance
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const headerOffset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
+  // Close menu when clicking on a link
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
   };
 
-  // Navigation items with translations
-  const navItems = [
-    { id: 'sobre', label: t('about') },
-    { id: 'experiência', label: t('experience') },
-    { id: 'habilidades', label: t('skills') },
-    { id: 'formação', label: t('education') },
-    { id: 'contato', label: t('contact') }
-  ];
+  // Toggle mobile menu
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <header 
-      className={cn(
-        "fixed w-full top-0 left-0 z-50 transition-all duration-300 px-6 py-4",
-        scrolled 
-          ? (theme === 'dark' 
-              ? "bg-background/80 backdrop-blur-md border-b border-border/10" 
-              : "bg-white/80 backdrop-blur-md shadow-sm") 
-          : "bg-transparent"
-      )}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'py-3 bg-background/80 backdrop-blur-md shadow-sm dark:bg-background/80'
+          : 'py-5 bg-transparent'
+      }`}
     >
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <a 
-          href="#" 
-          className="text-xl font-display font-bold tracking-tight"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-        >
-          Edivando Reis
-        </a>
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <a href="#" className="text-xl font-bold tracking-tight text-foreground">
+            Edivando Reis
+          </a>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
-          <nav className="flex items-center space-x-6">
-            {navItems.map(item => (
-              <button 
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="text-sm text-muted-foreground/90 hover:text-foreground transition-colors capitalize"
-              >
-                {item.label}
-              </button>
-            ))}
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <a
+              href="#about"
+              className="text-sm font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('about')}
+            </a>
+            <a
+              href="#experience"
+              className="text-sm font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('experience')}
+            </a>
+            <a
+              href="#projects"
+              className="text-sm font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('projects')}
+            </a>
+            <a
+              href="#skills"
+              className="text-sm font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('skills')}
+            </a>
+            <a
+              href="#education"
+              className="text-sm font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('education')}
+            </a>
+            <a
+              href="#contact"
+              className="text-sm font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('contact')}
+            </a>
           </nav>
-          
-          {/* Language Toggle */}
-          <Toggle 
-            variant="outline" 
-            size="sm" 
-            pressed={language === 'en'}
-            onPressedChange={toggleLanguage}
-            className="rounded-full w-8 h-8 p-0 border-border/40 hover:bg-secondary hover:text-foreground"
-            aria-label="Toggle language"
-          >
-            {language === 'pt' ? (
-              <img src={BR} alt="" />
-            ) : (
-             <img src={USA} alt="" />
-             
-            )}
-          </Toggle>
 
-          {/* Theme Toggle */}
-          <Toggle 
-            variant="outline" 
-            size="sm" 
-            pressed={theme === 'dark'}
-            onPressedChange={toggleTheme}
-            className="rounded-full w-8 h-8 p-0 border-border/40 hover:bg-secondary hover:text-foreground"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? (
-              <Sun size={16} className="transition-all" />
-            ) : (
-              <Moon size={16} className="transition-all" />
-            )}
-          </Toggle>
+          {/* Theme Toggle & Menu Button */}
+          <div className="flex items-center space-x-4 ">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full text-foreground/80 hover:bg-muted transition-colors"
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLanguage}
+              className="p-2 rounded-full text-foreground/80 hover:bg-muted transition-colors"
+              aria-label={language === 'pt' ? 'Switch to English' : 'Mudar para Português'}
+            >
+              <span className="text-sm font-medium">
+                {language === 'pt' ? (
+                  <span className="flex items-center text-blue-600">PT</span>
+                ) : (
+                  <span className="flex items-center text-green-600">EN</span>
+                )}
+              </span>
+            </button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className="md:hidden p-2 rounded-full text-foreground/80 hover:bg-muted transition-colors"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
+      </div>
 
-        <div className="flex md:hidden items-center gap-4">
-          {/* Language Toggle (Mobile) */}
-          <Toggle 
-            variant="outline" 
-            size="sm" 
-            pressed={language === 'en'}
-            onPressedChange={toggleLanguage}
-            className="rounded-full w-8 h-8 p-0 border-border/40 hover:bg-secondary hover:text-foreground"
-            aria-label="Toggle language"
+      {/* Mobile Navigation */}
+      <div
+  className={`md:hidden fixed inset-0 bg-background dark:bg-background z-64 transition-transform duration-300 ease-in-out ${
+    isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+  }`}
+>
+        <div className="flex flex-col h-full pt-6 px-6 dark:bg-background">
+          {/* Close Button */}
+          <button
+            onClick={toggleMenu}
+            className="self-end p-2 rounded-full text-foreground/80 hover:bg-muted transition-colors"
+            aria-label="Close menu"
           >
-            {language === 'pt' ? (
-              <img src={BR} alt="" />
-            ) : (
-              <img src={USA} alt="" />
-            )}
-          </Toggle>
-          
-          {/* Theme Toggle (Mobile) */}
-          <Toggle 
-            variant="outline" 
-            size="sm" 
-            pressed={theme === 'dark'}
-            onPressedChange={toggleTheme}
-            className="rounded-full w-8 h-8 p-0 border-border/40 hover:bg-secondary hover:text-foreground"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? (
-              <Sun size={16} className="transition-all" />
-            ) : (
-              <Moon size={16} className="transition-all" />
-            )}
-          </Toggle>
-
-          {/* Mobile Menu Button */}
-          <button 
-            className="p-2 focus:outline-none z-50"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <div className="w-6 flex flex-col items-end gap-1.5">
-              <span 
-                className={cn(
-                  "bg-foreground h-0.5 rounded-full transition-all duration-300",
-                  mobileMenuOpen ? "w-6 translate-y-2 rotate-45" : "w-6"
-                )}
-              />
-              <span 
-                className={cn(
-                  "bg-foreground h-0.5 rounded-full transition-all duration-300",
-                  mobileMenuOpen ? "opacity-0" : "w-4 opacity-100"
-                )}
-              />
-              <span 
-                className={cn(
-                  "bg-foreground h-0.5 rounded-full transition-all duration-300",
-                  mobileMenuOpen ? "w-6 -translate-y-2 -rotate-45" : "w-5"
-                )}
-              />
-            </div>
+            <X size={24} />
           </button>
-        </div>
-
-        {/* Mobile Navigation Overlay */}
-        <div 
-          className={cn(
-            "fixed inset-0 bg-background flex flex-col items-center justify-center transition-all duration-500 md:hidden",
-            mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
-          )}
-        >
-          <nav className="flex flex-col items-center space-y-6">
-            {navItems.map(item => (
-              <button 
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="text-xl font-medium hover:text-accent transition-colors capitalize py-2"
-              >
-                {item.label}
-              </button>
-            ))}
+          <nav className="flex flex-col space-y-6 items-center mt-10 ">
+            <a
+              href="#about"
+              onClick={handleLinkClick}
+              className="text-xl font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('about')}
+            </a>
+            <a
+              href="#experience"
+              onClick={handleLinkClick}
+              className="text-xl font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('experience')}
+            </a>
+            <a
+              href="#skills"
+              onClick={handleLinkClick}
+              className="text-xl font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('skills')}
+            </a>
+            <a
+              href="#projects"
+              onClick={handleLinkClick}
+              className="text-xl font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('projects')}
+            </a>
+            <a
+              href="#education"
+              onClick={handleLinkClick}
+              className="text-xl font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('education')}
+            </a>
+            <a
+              href="#contact"
+              onClick={handleLinkClick}
+              className="text-xl font-medium text-foreground/80 hover:text-accent transition-colors"
+            >
+              {t('contact')}
+            </a>
           </nav>
         </div>
       </div>
