@@ -72,7 +72,7 @@ const Hero: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center stagger-delay-3">
           <button 
             onClick={() => {
-              const element = document.getElementById('experiência');
+              const element = document.getElementById('experience');
               if (element) {
                 const yOffset = -80;
                 const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -85,7 +85,7 @@ const Hero: React.FC = () => {
           </button>
           <button 
             onClick={() => {
-              const element = document.getElementById('contato');
+              const element = document.getElementById('contact');
               if (element) {
                 const yOffset = -80;
                 const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
