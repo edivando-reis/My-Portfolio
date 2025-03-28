@@ -34,7 +34,7 @@ const Header: React.FC = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? 'py-3 bg-background/80 backdrop-blur-md shadow-sm dark:bg-background/80'
-          : 'py-5 bg-transparent'
+          : 'py-5 bg-b'
       }`}
     >
       <div className="container mx-auto px-6">
@@ -124,11 +124,11 @@ const Header: React.FC = () => {
 
       {/* Mobile Navigation */}
       <div
-  className={`md:hidden fixed inset-0 bg-background dark:bg-background z-64 transition-transform duration-300 ease-in-out ${
+  className={`md:hidden fixed inset-0 bg-background dark:bg-background z-50 transition-transform duration-300 ease-in-out ${
     isMenuOpen ? 'translate-x-0' : 'translate-x-full'
   }`}
 >
-        <div className="flex flex-col h-full pt-6 px-6 dark:bg-background">
+        <div className="flex flex-col h-full pt-6 px-6">
           {/* Close Button */}
           <button
             onClick={toggleMenu}
@@ -137,7 +137,7 @@ const Header: React.FC = () => {
           >
             <X size={24} />
           </button>
-          <nav className="flex flex-col space-y-6 items-center mt-10 ">
+          <nav className="flex flex-col space-y-6 items-center mt-10">
             <a
               href="#about"
               onClick={handleLinkClick}
