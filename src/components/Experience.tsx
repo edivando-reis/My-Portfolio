@@ -89,15 +89,15 @@ const jobsData: Job[] = [
   },
   
   {
-    title: "assistente de service desk",
-    company: "cpm braxis",
+    title: "Assistente de service desk",
+    company: "Cpm braxis",
     location: "São paulo",
     period: "05/2007 - 01/2009",
     description: [
-      "instalação e configuração de componentes de hardware e software para garantir a usabilidade.",
-      "solucionar problemas de hardware e software, reparar ou substituir o hardware danificado.",
-      "atualizar todo o sistema de todos os computadores da rede.",
-      "fornecer suporte aos usuários e ser o primeiro ponto de contato."
+      "Instalação e configuração de componentes de hardware e software para garantir a usabilidade.",
+      "Solucionar problemas de hardware e software, reparar ou substituir o hardware danificado.",
+      "Atualizar todo o sistema de todos os computadores da rede.",
+      "Fornecer suporte aos usuários e ser o primeiro ponto de contato."
     ]
   }
 ];
