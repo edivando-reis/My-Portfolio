@@ -23,6 +23,7 @@ export const enTranslations: Record<string, string> = {
     
     // Education Section
     'academic.education': 'Academic Education',
+    'complementary.courses': 'Complementary courses',
 
     // Projects Section
     'my.projects': 'Projects',
